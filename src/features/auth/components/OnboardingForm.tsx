@@ -1,0 +1,172 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/shadcn/Button';
+import {
+  Form,
+  FormControl,
+  FormControlIcon,
+  FormControlWithIcon,
+  FormField,
+  FormInput,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/shadcn/Form';
+import FormLoading from '@/components/shared/FormLoading';
+import { DEFAULT_REDIRECT } from '@/constants';
+import { onboardUser } from '@/features/auth/actions';
+import VisibilityToggle from '@/features/auth/components/VisibilityToggle';
+import { INVITE_CODE_KEY } from '@/features/auth/constants';
+import { OnboardingSchema, onboardingSchema } from '@/features/auth/schemas';
+import { useError } from '@/hooks/useError';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import {
+  ONBOARDING_BUTTON_CREATE_ACCOUNT,
+  ONBOARDING_LABEL_CONFIRM_PASSWORD,
+  ONBOARDING_LABEL_NAME,
+  ONBOARDING_LABEL_PASSWORD,
+  ONBOARDING_TOAST_INVITE_MISSING,
+} from '@/translations/en';
+import { cn } from '@/utils';
+
+type TOnboardingFormProps = {
+  userId: string;
+};
+
+const OnboardingForm = ({ userId }: TOnboardingFormProps) => {
+  const router = useRouter();
+  const { toastError } = useError();
+  const { getItem, removeItem } = useLocalStorage();
+
+  const [pwdVisible, setPwdVisible] = useState(false);
+  const [confirmPwdVisible, setConfirmPwdVisible] = useState(false);
+  const [isPending, setPending] = useState(false);
+
+  const form = useForm<OnboardingSchema>({
+    resolver: zodResolver(onboardingSchema),
+    defaultValues: {
+      name: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = async (values: OnboardingSchema) => {
+    try {
+      setPending(true);
+
+      // Get invite code from the local storage
+      const inviteCode = getItem<string>(INVITE_CODE_KEY);
+      if (!inviteCode) {
+        toast(ONBOARDING_TOAST_INVITE_MISSING);
+        return;
+      }
+
+      const res = await onboardUser({
+        userId: userId,
+        name: values.name,
+        password: values.password,
+        inviteCode,
+      });
+
+      // If success redirect to signin
+      if (res?.success) {
+        // Remove invite code from the local storage
+        removeItem(INVITE_CODE_KEY);
+        // Redirect to the signin page
+        router.replace(`/signin?redirectTo=${DEFAULT_REDIRECT.slice(1)}`);
+        return;
+      }
+
+      toastError(res);
+      setPending(false);
+    } catch (err: unknown) {
+      toastError(err);
+      setPending(false);
+    }
+  };
+
+  return (
+    <Form {...form}>
+      <div className="relative">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className={cn('auth-form mx-4', isPending && 'inactive')}
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{ONBOARDING_LABEL_NAME}</FormLabel>
+                <FormControl>
+                  <FormInput {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{ONBOARDING_LABEL_PASSWORD}</FormLabel>
+                <FormControlWithIcon>
+                  <FormControlIcon>
+                    <VisibilityToggle
+                      onClick={() => setPwdVisible((prev) => !prev)}
+                    />
+                  </FormControlIcon>
+                  <FormInput
+                    {...field}
+                    type={pwdVisible ? 'text' : 'password'}
+                  />
+                </FormControlWithIcon>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{ONBOARDING_LABEL_CONFIRM_PASSWORD}</FormLabel>
+                <FormControlWithIcon>
+                  <FormControlIcon>
+                    <VisibilityToggle
+                      onClick={() => setConfirmPwdVisible((prev) => !prev)}
+                    />
+                  </FormControlIcon>
+                  <FormInput
+                    {...field}
+                    type={confirmPwdVisible ? 'text' : 'password'}
+                  />
+                </FormControlWithIcon>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            loading={isPending}
+            className="auth-form_button"
+            type="submit"
+          >
+            {ONBOARDING_BUTTON_CREATE_ACCOUNT}
+          </Button>
+          <FormLoading loadigIconClassName="-mt-14" isPending={isPending} />
+        </form>
+        <FormLoading loadigIconClassName="-mt-14" isPending={isPending} />
+      </div>
+    </Form>
+  );
+};
+
+export default OnboardingForm;
