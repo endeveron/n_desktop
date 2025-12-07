@@ -17,7 +17,11 @@ const MainShell = ({ children }: { children: ReactNode }) => {
     <div className="anim-fade h-dvh flex max-sm:items-center flex-col p-2">
       <div className="flex flex-1 min-h-0 gap-2">
         {/* Mobile: Only Prime column */}
-        {isXs && <PrimeColumn isMobile showExtraColumnToggle={false} />}
+        {isXs && (
+          <div className="flex-center flex-1">
+            <PrimeColumn isMobile showExtraColumnToggle={false} />
+          </div>
+        )}
 
         {/* Tablet | Desktop: Full layout  */}
         {isSm && (
