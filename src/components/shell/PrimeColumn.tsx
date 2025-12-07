@@ -35,7 +35,7 @@ const PrimeColumn = ({ isMobile, showExtraColumnToggle }: PrimeColumnProps) => {
         <MainMenu />
 
         {isMobile && (
-          <div className="flex-center w-full pr-2">
+          <div className="flex-center w-full">
             <Time />
           </div>
         )}

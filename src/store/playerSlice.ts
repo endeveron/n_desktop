@@ -55,7 +55,7 @@ export const playerSlice: StateCreator<PlayerSlice, [], [], PlayerSlice> = (
     // Case A: Loop mode is SINGLE
     // Action: Restart track
     if (loopMode === LoopMode.SINGLE) {
-      console.log('Case A');
+      // console.log('Case A');
       set({
         audioTrackId: audioTrackId,
         isAudioPlaying: false,
@@ -67,7 +67,7 @@ export const playerSlice: StateCreator<PlayerSlice, [], [], PlayerSlice> = (
     // Case B: Loop mode is ALL. All tracks are played
     // Action: Restart playlist
     if (loopMode === LoopMode.ALL && curIndex === lastIndex) {
-      console.log('Case B');
+      // console.log('Case B');
       set({
         audioTrackId: playlistTracks[0].id,
         isAudioPlaying: false,
@@ -79,7 +79,7 @@ export const playerSlice: StateCreator<PlayerSlice, [], [], PlayerSlice> = (
     // Case C: Loop mode is DISABLED. All tracks are played
     // Action: Reset playlist
     if (loopMode === LoopMode.DISABLED && curIndex === lastIndex) {
-      console.log('Case C');
+      // console.log('Case C');
       set({
         audioTrackId: playlistTracks[0].id,
         isAudioPlaying: false,
@@ -90,7 +90,7 @@ export const playerSlice: StateCreator<PlayerSlice, [], [], PlayerSlice> = (
 
     // Default case: Play next track
     if (curIndex < lastIndex) {
-      console.log('Case D');
+      // console.log('Case D');
       set({
         audioTrackId: playlistTracks[curIndex + 1].id,
         isAudioPlaying: false,

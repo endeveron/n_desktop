@@ -20,6 +20,7 @@ import PlayerVolume from '@/features/player/components/PlayerVolume';
 import { useAudioPlayer } from '@/features/player/hooks/useAudioPlayer';
 import { LoopMode } from '@/features/player/types';
 import { cn } from '@/utils';
+import { PLAYLIST_0_TITLE, PLAYLIST_1_TITLE } from '@/translations/en';
 
 const AudioPlayer = () => {
   const {
@@ -151,30 +152,34 @@ const AudioPlayer = () => {
           <button
             onClick={() => handleBrowsingPlaylistId('0')}
             className={cn(
-              'text-muted hover:text-accent text-[10px] uppercase font-semibold cursor-pointer trans-c',
+              'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
               browsingPlaylistId === '0' && 'text-accent pointer-events-none'
             )}
           >
-            OS
+            {PLAYLIST_0_TITLE}
           </button>
 
           <button
             onClick={() => handleBrowsingPlaylistId('1')}
             className={cn(
-              'text-muted hover:text-accent text-[10px] uppercase font-semibold cursor-pointer trans-c',
+              'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
               browsingPlaylistId === '1' && 'text-accent pointer-events-none'
             )}
           >
-            NastelBom
+            {PLAYLIST_1_TITLE}
           </button>
         </Card>
       )}
 
       {/* Playlist card */}
       {isAudioPlaylistOpen && browsingPlaylistLength > 0 && (
-        // <Card className="flex-col items-start h-36">
-        <Card className="flex-col items-start">
-          <ScrollArea className="relative size-full">
+        <Card
+          className={cn(
+            'flex-col items-start',
+            browsingPlaylistLength > 11 && 'h-85'
+          )}
+        >
+          <ScrollArea className="relative size-full rounded-lg">
             <div className="py-3">
               {browsingPlaylist.map((track) => {
                 const isActive = audioTrack?.id === track.id;
@@ -183,7 +188,7 @@ const AudioPlayer = () => {
                   <div
                     onClick={() => handleAudioTrackSelect(track.id)}
                     className={cn(
-                      'w-full flex gap-2 px-3 py-1.5 text-xs text-muted font-bold truncate hover:bg-popover/70 trans-a group cursor-pointer',
+                      'w-74 flex gap-2 px-3 py-1.5 text-xs text-muted font-bold hover:bg-popover/70 trans-a group cursor-pointer',
                       isActive && 'bg-popover/70',
                       isPlaying && 'pointer-events-none'
                     )}
@@ -192,14 +197,14 @@ const AudioPlayer = () => {
                     <span>{track.index + 1}</span>
                     <span
                       className={cn(
-                        'tracking-wide group-hover:text-foreground trans-c',
+                        'tracking-wide group-hover:text-foreground trans-c truncate',
                         isPlaying && 'text-accent'
                       )}
                     >
                       {track.title}
                     </span>
                     <span>-</span>
-                    <span>{track.artist}</span>
+                    <span className="truncate">{track.artist}</span>
                   </div>
                 );
               })}

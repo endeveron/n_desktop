@@ -89,10 +89,17 @@ export const THEME_LABEL_DARK = 'Dark';
 export const THEME_LABEL_SUFFIX = ' theme';
 export const SIGN_OUT_LABEL = 'Sign out';
 
+// Misc
+
 export const DATA_ERROR = 'Unable to retrieve data';
 export const RETRIEVE_DATA = 'Retrieve Data';
 export const UPDATE = 'Update';
 export const DETAILS = 'Details';
+
+// Audio player
+
+export const PLAYLIST_0_TITLE = 'Live';
+export const PLAYLIST_1_TITLE = 'Soul';
 
 // Pages
 

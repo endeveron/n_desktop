@@ -6,6 +6,7 @@ import ExtraColumn from '@/components/shell/ExtraColumn';
 import PrimeColumn from '@/components/shell/PrimeColumn';
 import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint';
 import { useStore } from '@/store';
+import MobileContent from '@/components/shell/MobileContent';
 // import MainMenu from '@/components/shared/MainMenu';
 
 const MainShell = ({ children }: { children: ReactNode }) => {
@@ -16,12 +17,8 @@ const MainShell = ({ children }: { children: ReactNode }) => {
   return (
     <div className="anim-fade h-dvh flex max-sm:items-center flex-col p-2">
       <div className="flex flex-1 min-h-0 gap-2">
-        {/* Mobile: Only Prime column */}
-        {isXs && (
-          <div className="flex-center flex-1">
-            <PrimeColumn isMobile showExtraColumnToggle={false} />
-          </div>
-        )}
+        {/* Mobile only */}
+        {isXs && <MobileContent />}
 
         {/* Tablet | Desktop: Full layout  */}
         {isSm && (

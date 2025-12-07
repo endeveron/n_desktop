@@ -4,8 +4,8 @@ import { toast } from 'sonner';
 import { ASSETS_URL } from '@/constants';
 import { PLAYLIST_MAP, TRACK_MAP } from '@/features/player/data';
 import { LoopMode } from '@/features/player/types';
+import { fadeVolume, getPlaylistId } from '@/features/player/utils';
 import { useStore } from '@/store';
-import { fadeVolume } from '@/features/player/utils';
 
 export const useAudioPlayer = () => {
   const {
@@ -43,7 +43,8 @@ export const useAudioPlayer = () => {
     if (audioLoopMode === LoopMode.ALL) return true;
     if (!audioTrack) return false;
 
-    const playlist = PLAYLIST_MAP.get(audioTrack.playlistId) || [];
+    const playlistId = getPlaylistId(audioTrack.id);
+    const playlist = PLAYLIST_MAP.get(playlistId) || [];
     const curIndex = playlist.findIndex((t) => t.id === audioTrackId);
     return curIndex < playlist.length - 1;
   }, [audioTrack, audioTrackId, audioLoopMode]);
@@ -51,7 +52,8 @@ export const useAudioPlayer = () => {
   const hasPreviousAudioTrack = useMemo(() => {
     if (!audioTrack) return false;
 
-    const playlist = PLAYLIST_MAP.get(audioTrack.playlistId) || [];
+    const playlistId = getPlaylistId(audioTrack.id);
+    const playlist = PLAYLIST_MAP.get(playlistId) || [];
     const curIndex = playlist.findIndex((t) => t.id === audioTrackId);
     return curIndex > 0;
   }, [audioTrack, audioTrackId]);

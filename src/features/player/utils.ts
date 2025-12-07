@@ -8,8 +8,12 @@ export const formatTime = (time: number) => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
+export const getPlaylistId = (trackId: string): string => {
+  return trackId.split('_')[0];
+};
+
 export const getPlaylistTracks = (trackId: string): Track[] | null => {
-  const playlistId = trackId.split('_')[0];
+  const playlistId = getPlaylistId(trackId);
   const playlistTracks = PLAYLIST_MAP.get(playlistId);
 
   if (!playlistTracks || playlistTracks.length === 0) {
