@@ -6,7 +6,6 @@ import { Card } from '@/components/shared/Card';
 import { ContentBox } from '@/components/shared/ContentBox';
 import MainMenu from '@/components/shared/MainMenu';
 import Navbar from '@/components/shared/Navbar';
-import Time from '@/components/shared/Time';
 import AirQuality from '@/features/air-quality/components/AirQuality';
 import Light from '@/features/light/components/Light';
 import { useStore } from '@/store';
@@ -15,11 +14,10 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 interface PrimeColumnProps {
-  isMobile: boolean;
   showExtraColumnToggle: boolean;
 }
 
-const PrimeColumn = ({ isMobile, showExtraColumnToggle }: PrimeColumnProps) => {
+const PrimeColumn = ({ showExtraColumnToggle }: PrimeColumnProps) => {
   const pathname = usePathname();
 
   const isExtraColumn = useStore((state) => state.isExtraColumn);
@@ -34,13 +32,7 @@ const PrimeColumn = ({ isMobile, showExtraColumnToggle }: PrimeColumnProps) => {
       <Card size="xs" className="flex items-center pr-3 pl-2">
         <MainMenu />
 
-        {isMobile && (
-          <div className="flex-center w-full">
-            <Time />
-          </div>
-        )}
-
-        {isRoot ? <div className="flex-1" /> : <Navbar isMobile={isMobile} />}
+        {isRoot ? <div className="flex-1" /> : <Navbar />}
 
         {showExtraColumnToggle ? (
           <span

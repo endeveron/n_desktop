@@ -13,7 +13,7 @@ const FormLoading = ({ isPending, loadigIconClassName }: TFormLoadingProps) => {
     <div
       className={cn(
         'opacity-0 absolute m-0! inset-0 flex-center -z-10 trans-o',
-        isPending && 'opacity-90 z-10 bg-area'
+        isPending && 'opacity-90 z-10'
       )}
     >
       <div className={cn(loadigIconClassName)}>

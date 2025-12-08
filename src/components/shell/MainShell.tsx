@@ -15,7 +15,7 @@ const MainShell = ({ children }: { children: ReactNode }) => {
   const showExtraColumnToggle = useMemo(() => isLg, [isLg]);
 
   return (
-    <div className="anim-fade h-dvh flex max-sm:items-center flex-col p-2">
+    <div className="anim-fade size-full flex max-sm:items-center flex-col p-2">
       <div className="flex flex-1 min-h-0 gap-2">
         {/* Mobile only */}
         {isXs && <MobileContent />}
@@ -23,10 +23,7 @@ const MainShell = ({ children }: { children: ReactNode }) => {
         {/* Tablet | Desktop: Full layout  */}
         {isSm && (
           <>
-            <PrimeColumn
-              isMobile={false}
-              showExtraColumnToggle={showExtraColumnToggle}
-            />
+            <PrimeColumn showExtraColumnToggle={showExtraColumnToggle} />
 
             {/* Page content */}
             <div className="flex flex-1 min-h-0">{children}</div>

@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import PrimeColumn from '@/components/shell/PrimeColumn';
+import { ContentBox } from '@/components/shared/ContentBox';
+import MainMenu from '@/components/shared/MainMenu';
+import AirQuality from '@/features/air-quality/components/AirQuality';
+import Light from '@/features/light/components/Light';
 import { cn } from '@/utils';
 
 const MobileContent = () => {
@@ -16,15 +19,22 @@ const MobileContent = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  if (!visible) return null;
+
   return (
-    <div
+    <ContentBox
       className={cn(
-        'flex-center flex-1 opacity-0 trans-o',
+        'mt-10 flex flex-col opacity-0 trans-o',
         visible && 'opacity-100'
       )}
     >
-      <PrimeColumn isMobile showExtraColumnToggle={false} />
-    </div>
+      <AirQuality />
+      <Light />
+
+      <div className="fixed z-10 top-16 left-4">
+        <MainMenu />
+      </div>
+    </ContentBox>
   );
 };
 

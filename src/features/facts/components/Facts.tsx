@@ -102,7 +102,7 @@ const Facts = () => {
           {fact?.category ? (
             <div
               className={cn(
-                'flex gap-3 text-[10px] font-bold uppercase tracking-wide text-muted/70 trans-o',
+                'flex gap-3 text-[10px] font-bold uppercase tracking-wide text-muted/70 trans-o select-none',
                 isFactsFetching && 'opacity-40'
               )}
             >

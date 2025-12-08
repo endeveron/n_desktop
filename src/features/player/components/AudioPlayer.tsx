@@ -146,39 +146,38 @@ const AudioPlayer = () => {
         </div>
       </Card>
 
-      {/* Playlists card */}
-      {isAudioPlaylistOpen && (
-        <Card className="px-3 flex-center gap-6">
-          <button
-            onClick={() => handleBrowsingPlaylistId('0')}
-            className={cn(
-              'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
-              browsingPlaylistId === '0' && 'text-accent pointer-events-none'
-            )}
-          >
-            {PLAYLIST_0_TITLE}
-          </button>
-
-          <button
-            onClick={() => handleBrowsingPlaylistId('1')}
-            className={cn(
-              'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
-              browsingPlaylistId === '1' && 'text-accent pointer-events-none'
-            )}
-          >
-            {PLAYLIST_1_TITLE}
-          </button>
-        </Card>
-      )}
-
       {/* Playlist card */}
       {isAudioPlaylistOpen && browsingPlaylistLength > 0 && (
         <Card
           className={cn(
             'flex-col items-start',
-            browsingPlaylistLength > 11 && 'h-85'
+            browsingPlaylistLength > 11 && 'h-100'
           )}
         >
+          {/* Playlists */}
+          <div className="w-full flex-center gap-6 pt-6 px-3 pb-1">
+            <button
+              onClick={() => handleBrowsingPlaylistId('0')}
+              className={cn(
+                'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
+                browsingPlaylistId === '0' && 'text-accent pointer-events-none'
+              )}
+            >
+              {PLAYLIST_0_TITLE}
+            </button>
+
+            <button
+              onClick={() => handleBrowsingPlaylistId('1')}
+              className={cn(
+                'text-muted hover:text-accent text-[10px] uppercase font-bold cursor-pointer trans-c',
+                browsingPlaylistId === '1' && 'text-accent pointer-events-none'
+              )}
+            >
+              {PLAYLIST_1_TITLE}
+            </button>
+          </div>
+
+          {/* Browsing playlist */}
           <ScrollArea className="relative size-full rounded-lg">
             <div className="py-3">
               {browsingPlaylist.map((track) => {

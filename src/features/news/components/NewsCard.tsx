@@ -1,14 +1,15 @@
 'use client';
 
-import { Card } from '@/components/shared/Card';
+import { useMemo, useState } from 'react';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/shadcn/Tooltip';
+import { Card } from '@/components/shared/Card';
 import { NEWS_DESCRIPTION_MAX_LENGTH } from '@/features/news/constants';
 import { DETAILS } from '@/translations/en';
-import { useMemo, useState } from 'react';
 
 export interface NewsCardProps {
   link?: string;
@@ -60,18 +61,18 @@ const NewsCard = ({ link, title, category, description }: NewsCardProps) => {
     const restOfTitle = words.slice(2).join(' ');
 
     return (
-      <span className="my-2 text-sm font-bold uppercase line-clamp-2 tracking-wide">
+      <div className="group my-2 text-sm font-bold uppercase line-clamp-2 tracking-wide">
         {/* First words */}
         <span className="text-accent">{accentText}</span>
 
         {/* Rest */}
         {restOfTitle ? (
-          <span className="dark:text-foreground/95 hover:text-accent">
+          <span className="text-secondary group-hover:text-accent trans-c">
             {` `}
             {restOfTitle}
           </span>
         ) : null}
-      </span>
+      </div>
     );
   }, [title]);
 

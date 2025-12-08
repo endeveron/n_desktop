@@ -9,7 +9,7 @@ function Slider({
   className,
   defaultValue,
   value,
-  hideThumb = false, // 👈 NEW PROP
+  hideThumb = false,
   min = 0,
   max = 100,
   ...props
@@ -43,7 +43,7 @@ function Slider({
       <SliderPrimitive.Track
         data-slot="slider-track"
         className={cn(
-          'bg-muted/60 relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1'
+          'bg-muted/30 relative grow overflow-hidden rounded-full data-[orientation=horizontal]:h-1 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1'
         )}
       >
         <SliderPrimitive.Range

@@ -106,7 +106,7 @@ const AirQuality = () => {
             <div
               onClick={fetchData}
               className={cn(
-                'flex-center text-xl font-black tracking-wider cursor-default -translate-y-px',
+                'flex-center text-xl font-black tracking-wider cursor-default',
                 updateAllowed && 'cursor-pointer'
               )}
               title={updateAllowed ? 'Update' : ''}
