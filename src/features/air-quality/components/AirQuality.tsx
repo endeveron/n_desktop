@@ -15,8 +15,13 @@ import {
 import { useStore } from '@/store';
 import { DATA_ERROR, RETRIEVE_DATA } from '@/translations/en';
 import { cn } from '@/utils';
+import MainMenu from '@/components/shared/MainMenu';
 
-const AirQuality = () => {
+interface AirQualityProps {
+  isMobile?: boolean;
+}
+
+const AirQuality = ({ isMobile }: AirQualityProps) => {
   const airQualityData = useStore((state) => state.airQualityData);
   const airQualityTimestamp = useStore((state) => state.airQualityTimestamp);
   const isAirQualityFetching = useStore((state) => state.isAirQualityFetching);
@@ -94,45 +99,52 @@ const AirQuality = () => {
       onKeyDown={handleKeyDown}
       focusByTab
       className={cn(
-        'flex-center',
+        'flex items-center gustify-between',
         isAirQualityFetching &&
           'opacity-40 pointer-events-none cursor-not-allowed'
       )}
       aria-label={`Refresh data`}
     >
-      {airQualityData ? (
-        <div className="anim-fade flex gap-1">
-          {airQualityData.overall ? (
-            <div
-              onClick={fetchData}
-              className={cn(
-                'flex-center text-xl font-black tracking-wider cursor-default',
-                updateAllowed && 'cursor-pointer'
-              )}
-              title={updateAllowed ? 'Update' : ''}
-            >
+      {isMobile ? (
+        <div className="ml-2 shrink-0">
+          <MainMenu />
+        </div>
+      ) : null}
+
+      <div className="flex-center flex-1">
+        {airQualityData ? (
+          <div className="anim-fade flex gap-1">
+            {airQualityData.overall ? (
               <div
-                className="h-4 w-4 rounded-full"
-                style={{
-                  backgroundColor: getAirQualityCategoryData(
-                    airQualityData.overall.categoryId
-                  )!.color,
-                }}
-              />
-              <span className="mr-4 ml-2">{airQualityData.overall.aqi}</span>
-            </div>
-          ) : null}
-
-          <div className="flex justify-center flex-col">
-            {airQualityData.pm25 ? (
-              <AirQualitySensor {...airQualityData.pm25} particleSize="2.5" />
+                onClick={fetchData}
+                className={cn(
+                  'flex-center text-xl font-black tracking-wider cursor-default',
+                  updateAllowed && 'cursor-pointer'
+                )}
+                title={updateAllowed ? 'Update' : ''}
+              >
+                <div
+                  className="h-4 w-4 rounded-full"
+                  style={{
+                    backgroundColor: getAirQualityCategoryData(
+                      airQualityData.overall.categoryId
+                    )!.color,
+                  }}
+                />
+                <span className="mr-4 ml-2">{airQualityData.overall.aqi}</span>
+              </div>
             ) : null}
 
-            {airQualityData.pm10 ? (
-              <AirQualitySensor {...airQualityData.pm10} particleSize="10" />
-            ) : null}
+            <div className="flex justify-center flex-col">
+              {airQualityData.pm25 ? (
+                <AirQualitySensor {...airQualityData.pm25} particleSize="2.5" />
+              ) : null}
 
-            {/* {airQualityData.overall?.categoryId ? (
+              {airQualityData.pm10 ? (
+                <AirQualitySensor {...airQualityData.pm10} particleSize="10" />
+              ) : null}
+
+              {/* {airQualityData.overall?.categoryId ? (
               <div className="mt-1.25 text-[10px] uppercase font-semibold">
                 {
                   getAirQualityCategoryData(airQualityData.overall.categoryId)
@@ -140,17 +152,18 @@ const AirQuality = () => {
                 }
               </div>
             ) : null} */}
+            </div>
           </div>
-        </div>
-      ) : isAirQualityError ? (
-        <div className="anim-fade my-8 flex-center">
-          <Button onClick={fetchData} variant="outline">
-            {RETRIEVE_DATA}
-          </Button>
-        </div>
-      ) : (
-        <Loading />
-      )}
+        ) : isAirQualityError ? (
+          <div className="anim-fade my-8 flex-center">
+            <Button onClick={fetchData} variant="outline">
+              {RETRIEVE_DATA}
+            </Button>
+          </div>
+        ) : (
+          <Loading />
+        )}
+      </div>
     </Card>
   );
 };

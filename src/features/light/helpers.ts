@@ -41,6 +41,17 @@ export function shouldRefetch({
 
   const lastUpdated = lightTimestamp ?? 0;
 
+  // Refetch if timestamp is from a previous day
+  const last = new Date(lastUpdated);
+  const isDifferentDay =
+    last.getFullYear() !== now.getFullYear() ||
+    last.getMonth() !== now.getMonth() ||
+    last.getDate() !== now.getDate();
+
+  if (isDifferentDay) {
+    return true;
+  }
+
   // If data is older than LIGHT_DATA_UPDATE_INTERVAL, always refetch (regardless of time window)
   if (Date.now() - lastUpdated > LIGHT_DATA_UPDATE_INTERVAL) return true;
 

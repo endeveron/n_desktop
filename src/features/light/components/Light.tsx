@@ -25,6 +25,9 @@ const Light = () => {
   const fetchLightData = useStore((state) => state.fetchLightData);
   const lightTimestamp = useStore((state) => state.lightTimestamp);
   const isLightInitialized = useStore((state) => state.isLightInitialized);
+  const resetLightDataInitialized = useStore(
+    (state) => state.resetLightDataInitialized
+  );
 
   const [mounted, setMounted] = useState(false);
 
@@ -54,8 +57,13 @@ const Light = () => {
   }, [fetchLightData]);
 
   const shouldUpdate = useMemo(() => {
-    return shouldRefetch({ lightData, lightTimestamp });
-  }, [lightData, lightTimestamp]);
+    const updateNeed = shouldRefetch({ lightData, lightTimestamp });
+    if (updateNeed) {
+      resetLightDataInitialized();
+    }
+
+    return updateNeed;
+  }, [lightData, lightTimestamp, resetLightDataInitialized]);
 
   // Init data on mount
   useEffect(() => {

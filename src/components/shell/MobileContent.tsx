@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 
 import { ContentBox } from '@/components/shared/ContentBox';
-import MainMenu from '@/components/shared/MainMenu';
 import AirQuality from '@/features/air-quality/components/AirQuality';
 import Light from '@/features/light/components/Light';
 import { cn } from '@/utils';
+import Facts from '@/features/facts/components/Facts';
 
 const MobileContent = () => {
   const [visible, setVisible] = useState(false);
@@ -24,16 +24,13 @@ const MobileContent = () => {
   return (
     <ContentBox
       className={cn(
-        'mt-10 flex flex-col opacity-0 trans-o',
+        'flex w-78 flex-col opacity-0 trans-o',
         visible && 'opacity-100'
       )}
     >
-      <AirQuality />
+      <AirQuality isMobile />
       <Light />
-
-      <div className="fixed z-10 top-16 left-4">
-        <MainMenu />
-      </div>
+      <Facts />
     </ContentBox>
   );
 };
