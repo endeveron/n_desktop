@@ -61,7 +61,7 @@ const NewsCard = ({ link, title, category, description }: NewsCardProps) => {
     const restOfTitle = words.slice(2).join(' ');
 
     return (
-      <div className="group my-2 text-sm font-bold uppercase line-clamp-2 tracking-wide">
+      <div className="group my-2 text-sm font-bold uppercase line-clamp-2">
         {/* First words */}
         <span className="text-accent">{accentText}</span>
 
@@ -113,7 +113,10 @@ const NewsCard = ({ link, title, category, description }: NewsCardProps) => {
                   <span className="cursor-pointer">{DETAILS}</span>
                 </TooltipTrigger>
                 {description && (
-                  <TooltipContent side="bottom" className="max-w-sm p-6">
+                  <TooltipContent
+                    side="bottom"
+                    className="dark:text-foreground/95 max-w-sm p-6"
+                  >
                     {description.length > NEWS_DESCRIPTION_MAX_LENGTH
                       ? `${description.slice(
                           0,

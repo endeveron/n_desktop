@@ -90,7 +90,7 @@ const Facts = () => {
         {fact ? (
           <div
             className={cn(
-              'anim-fade text-sm font-semibold tracking-wide mb-2 py-1 trans-o',
+              'anim-fade text-sm text-secondary font-semibold tracking-wide mb-2 py-1 trans-o',
               isFactsFetching && 'opacity-20'
             )}
           >

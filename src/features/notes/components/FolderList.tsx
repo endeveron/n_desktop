@@ -51,7 +51,7 @@ const FolderList = ({
           ? 'opacity-100'
           : 'opacity-0',
         small ? 'gap-2' : 'gap-3',
-        small && ready && 'slide-in-from-top-2 zoom-in-95 animate-in fade-in-0',
+        // small && ready && 'slide-in-from-top-2 zoom-in-95 animate-in fade-in-0',
         className
       )}
     >

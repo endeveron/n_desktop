@@ -12,7 +12,7 @@
 
   --background: hsl(var(--hue), 10%, 85%);
   --foreground: hsl(var(--hue), 10%, 5%);
-  --secondary: hsl(var(--hue), 10%, 20%);
+  --secondary: hsl(var(--hue), 10%, 25%);
 
   --inversed-background: hsl(var(--hue), 10%, 15%);
   --inversed-foreground: hsl(var(--hue), 10%, 95%);

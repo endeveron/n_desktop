@@ -381,9 +381,9 @@ export default function FolderPage() {
 
       <PageContentBox>
         {isFolderNotesFetching ? (
-          <Loading className="mt-8" delay={1000} />
+          <Loading className="mt-8.5 mb-9" delay={1000} />
         ) : folderNotes.length ? (
-          <NoteList className="mb-5" folders={folders} notes={folderNotes} />
+          <NoteList className="mb-9" folders={folders} notes={folderNotes} />
         ) : (
           createNoteBtn
         )}

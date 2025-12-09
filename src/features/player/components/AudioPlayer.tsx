@@ -53,7 +53,7 @@ const AudioPlayer = () => {
       <Card>
         <div
           className={cn(
-            'relative w-74 px-3 py-4',
+            'relative w-74 px-3 pt-3 pb-5',
             isAudioPlayerLoading && 'pointer-events-none'
           )}
         >
@@ -64,8 +64,8 @@ const AudioPlayer = () => {
               isAudioPlayerLoading && 'opacity-40'
             )}
           >
-            <span className="tracking-wide">{audioTrack?.title}</span>-
-            <span>{audioTrack?.artist}</span>
+            <span className="tracking-wide truncate">{audioTrack?.title}</span>-
+            <span className="truncate">{audioTrack?.artist}</span>
           </div>
 
           {/* Timeline */}
@@ -78,7 +78,7 @@ const AudioPlayer = () => {
           </div>
 
           {/* Navbar */}
-          <div className="-translate-y-0.5 flex-center gap-3">
+          <div className="-translate-y-px flex-center gap-3">
             {/* Reset Button */}
             <CircleButton
               disabled={!hasPreviousAudioTrack}
@@ -128,14 +128,14 @@ const AudioPlayer = () => {
           </div>
 
           {/* Volume control */}
-          <div className="absolute bottom-1 right-1">
+          <div className="absolute bottom-1.25 left-1">
             <PlayerVolume audioRef={audioRef} />
           </div>
 
           {/* Playlist toggle */}
           <div
             onClick={togglePlaylistMenu}
-            className="absolute bottom-0.75 left-1 p-2 text-muted/70 hover:text-accent transition-colors cursor-pointer"
+            className="absolute bottom-1 right-1 p-2 text-muted/70 hover:text-accent transition-colors cursor-pointer"
           >
             {isAudioPlaylistOpen ? (
               <ChevronUp className="w-4 h-4" />
@@ -151,11 +151,11 @@ const AudioPlayer = () => {
         <Card
           className={cn(
             'flex-col items-start',
-            browsingPlaylistLength > 11 && 'h-100'
+            browsingPlaylistLength > 11 && 'h-97.5'
           )}
         >
           {/* Playlists */}
-          <div className="w-full flex-center gap-6 pt-6 px-3 pb-1">
+          <div className="w-full flex-center gap-6 pt-4 px-3">
             <button
               onClick={() => handleBrowsingPlaylistId('0')}
               className={cn(
