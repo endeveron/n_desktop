@@ -3,6 +3,7 @@ import { StateCreator } from 'zustand';
 import { LoopMode } from '@/features/player/types';
 import { getPlaylistTracks } from '@/features/player/utils';
 import { initialState } from '@/store';
+import { PLAYLIST_MAP } from '@/features/player/data';
 
 export interface PlayerSlice {
   audioPlayerVolume: number;
@@ -21,7 +22,6 @@ export interface PlayerSlice {
   setAudioPlayerLoading: (value: boolean) => void;
   setAudioPlayerVolume: (value: number) => void;
   setBrowsingAudioPlaylistId: (id: string) => void;
-  // setAudioPlaylistLength: (value: number) => void;
   setAudioPlaylistOpen: (value: boolean) => void;
   setAudioTrackDuration: (value: number) => void;
   setAudioTrackId: (id: string) => void;
@@ -77,14 +77,26 @@ export const playerSlice: StateCreator<PlayerSlice, [], [], PlayerSlice> = (
     }
 
     // Case C: Loop mode is DISABLED. All tracks are played
-    // Action: Reset playlist
+    // Action: Play first track of next playlist (or first playlist if last)
     if (loopMode === LoopMode.DISABLED && curIndex === lastIndex) {
       // console.log('Case C');
-      set({
-        audioTrackId: playlistTracks[0].id,
-        isAudioPlaying: false,
-        isAutoPlay: false, // Autoplay is DISABLED
-      });
+      const { browsingPlaylistId } = get() as PlayerSlice;
+      const allPlaylistIds = Array.from(PLAYLIST_MAP.keys());
+      const currentPlaylistIndex = allPlaylistIds.indexOf(browsingPlaylistId);
+      const nextPlaylistId =
+        currentPlaylistIndex === allPlaylistIds.length - 1
+          ? allPlaylistIds[0] // Go to first playlist
+          : allPlaylistIds[currentPlaylistIndex + 1]; // Go to next playlist
+
+      const nextPlaylist = PLAYLIST_MAP.get(nextPlaylistId);
+      if (nextPlaylist && nextPlaylist.length > 0) {
+        set({
+          audioTrackId: nextPlaylist[0].id,
+          browsingPlaylistId: nextPlaylistId,
+          isAudioPlaying: false,
+          isAutoPlay: true, // Autoplay ENABLED to play first track of next playlist
+        });
+      }
       return;
     }
 
