@@ -361,16 +361,25 @@
 
   /* Lists */
   .prose li {
-    @apply list-inside;
+    @apply list-outside ml-4;
   }
   .prose ul li {
     @apply list-disc;
   }
   .prose ol li {
-    @apply list-decimal font-semibold;
+    @apply list-decimal;
   }
   .prose li::marker {
-    @apply text-accent;
+    @apply text-accent font-bold;
+  }
+
+  /* Quotes */
+  .prose blockquote {
+    @apply relative pl-4;
+  }
+  .prose blockquote::before {
+    content: '';
+    @apply absolute left-0 top-0 h-full w-1 bg-accent-background rounded-xs;
   }
 
   /* Loading */

@@ -27,7 +27,6 @@ export const initialState = {
   airQualityTimestamp: null,
   isAirQualityError: false,
   isAirQualityFetching: false,
-  isAirQualityInitialized: false,
 
   // Facts slice
   fact: null,
@@ -64,7 +63,6 @@ export const initialState = {
 
   // Notes slice: Main
   isNotesError: false,
-  isNotesInitialized: false,
   notesTimestamp: null,
 
   // Notes slice: Notes
@@ -139,7 +137,6 @@ export const useStore = create<Store>()(
           folderId: state.folderId,
           folders: state.folders,
           folderNotes: state.folderNotes,
-          isNotesInitialized: state.isNotesInitialized,
           // Player
           audioLoopMode: state.audioLoopMode,
           audioPlayerVolume: state.audioPlayerVolume,

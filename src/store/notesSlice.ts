@@ -25,9 +25,7 @@ import { logWithTime } from '@/utils';
 
 export interface NotesSlice {
   isNotesError: boolean;
-  isNotesInitialized: boolean;
   notesTimestamp: number | null;
-  resetNotesInitialized: () => void;
 
   // Notes
   isFolderNotesError: boolean;
@@ -105,8 +103,6 @@ export const notesSlice: StateCreator<NotesSlice, [], [], NotesSlice> = (
   get
 ) => ({
   ...initialState,
-
-  resetNotesInitialized: () => set({ isNotesInitialized: false }),
 
   // Notes
   createNote: async ({ folderId, userId }) => {
@@ -423,8 +419,8 @@ export const notesSlice: StateCreator<NotesSlice, [], [], NotesSlice> = (
   },
 
   fetchFolders: async ({ userId }) => {
-    const { fetchingFolders, isNotesInitialized } = get() as NotesSlice;
-    if (!userId || isNotesInitialized) {
+    const { fetchingFolders } = get() as NotesSlice;
+    if (!userId) {
       return false;
     }
     if (fetchingFolders) {
@@ -434,7 +430,6 @@ export const notesSlice: StateCreator<NotesSlice, [], [], NotesSlice> = (
     set({
       fetchingFolders: true,
       isNotesError: false,
-      isNotesInitialized: true,
     });
 
     const res = await getFolders({ userId });

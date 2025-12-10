@@ -22,7 +22,6 @@ const Notes = () => {
   const fetchFolders = useStore((s) => s.fetchFolders);
   const fetchingFolders = useStore((state) => state.fetchingFolders);
   const folders = useStore((state) => state.folders);
-  const isNotesInitialized = useStore((s) => s.isNotesInitialized);
   const notesTimestamp = useStore((s) => s.notesTimestamp);
 
   const creatingFolder = useStore((s) => s.creatingFolder);
@@ -30,11 +29,6 @@ const Notes = () => {
   const favoriteNotes = useStore((s) => s.favoriteNotes);
 
   const [mounted, setMounted] = useState(false);
-
-  const updateAllowed = useMemo(
-    () => allowNotesUpdate(folders, notesTimestamp),
-    [folders, notesTimestamp]
-  );
 
   const handleCreateFolder = async () => {
     if (!userId) return;
@@ -46,7 +40,11 @@ const Notes = () => {
   };
 
   const fetchData = useCallback(async () => {
-    if (!userId || !updateAllowed) return;
+    if (!userId) return;
+
+    const updateAllowed = allowNotesUpdate(folders, notesTimestamp);
+
+    if (!updateAllowed || fetchingFolders) return;
 
     console.log('Notes: Fetching folders...');
 
@@ -54,7 +52,9 @@ const Notes = () => {
     if (!success) {
       toast('Unable to retrieve folders');
     }
-  }, [fetchFolders, updateAllowed, userId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   // Wait for client-side mount
   useEffect(() => {
@@ -64,26 +64,15 @@ const Notes = () => {
   // Init folders on mount
   useEffect(() => {
     if (
-      !userId ||
-      !mounted || // Component not ready
-      isNotesInitialized || // Already initialized
-      (folders && !updateAllowed) // Data received and stored in the store, Auto-refresh interval not reached
+      !mounted // Component not ready
     ) {
       return;
     }
 
     fetchData();
-  }, [
-    userId,
-    fetchFolders,
-    mounted,
-    folders,
-    updateAllowed,
-    fetchData,
-    isNotesInitialized,
-  ]);
+  }, [mounted, fetchData]);
 
-  if (!isNotesInitialized || fetchingFolders) {
+  if (fetchingFolders) {
     return (
       <Card size="xs">
         <Loading />
