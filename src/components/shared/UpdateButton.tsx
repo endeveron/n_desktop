@@ -14,10 +14,15 @@ const UpdateButton = ({ loading, onUpdate }: UpdateButtonProps) => {
     <Button
       size="sm"
       variant="outline"
-      className={cn('px-1.75!', loading && 'pointer-events-none')}
+      className={cn('group px-1.75!', loading && 'pointer-events-none')}
       onClick={onUpdate}
     >
-      <RefreshIcon className={cn(loading && 'animate-spin text-accent')} />
+      <RefreshIcon
+        className={cn(
+          'group-hover:text-black',
+          loading && 'animate-spin text-accent'
+        )}
+      />
     </Button>
   );
 };

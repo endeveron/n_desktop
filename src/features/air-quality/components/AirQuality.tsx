@@ -1,11 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/shadcn/Button';
 import { Card } from '@/components/shared/Card';
 import Loading from '@/components/shared/Loading';
+import MainMenu from '@/components/shared/MainMenu';
 import AirQualitySensor from '@/features/air-quality/components/AirQualitySensor';
 import { AIR_QUALITY_UPD_INTERVAL } from '@/features/air-quality/constants';
 import {
@@ -15,7 +16,6 @@ import {
 import { useStore } from '@/store';
 import { DATA_ERROR, RETRIEVE_DATA } from '@/translations/en';
 import { cn } from '@/utils';
-import MainMenu from '@/components/shared/MainMenu';
 
 interface AirQualityProps {
   isMobile?: boolean;
@@ -30,49 +30,44 @@ const AirQuality = ({ isMobile }: AirQualityProps) => {
 
   const [mounted, setMounted] = useState(false);
 
-  // Prevent multiple calls
-  const initializedRef = useRef(false);
-
-  const updateAllowed = useMemo(
-    () => allowAirQualityUpdate(airQualityData, airQualityTimestamp),
-    [airQualityData, airQualityTimestamp]
-  );
-
-  // Wait for client-side mount
   useEffect(() => {
     (() => setMounted(true))();
   }, []);
 
   const fetchData = useCallback(async () => {
-    if (!updateAllowed) return;
+    const updateAllowed = allowAirQualityUpdate(
+      airQualityData,
+      airQualityTimestamp
+    );
+
+    if (!updateAllowed || isAirQualityFetching) return;
 
     const success = await fetchAirQualityData();
-
     if (!success) {
       toast(DATA_ERROR);
     }
-  }, [fetchAirQualityData, updateAllowed]);
+  }, [
+    fetchAirQualityData,
+    airQualityData,
+    airQualityTimestamp,
+    isAirQualityFetching,
+  ]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      fetchData();
-    }
+  const handleUpdate = () => {
+    fetchData();
   };
 
-  // Init data on mount
+  // Init data on mount - schedule fetch after render
   useEffect(() => {
-    if (
-      !mounted || // Component not ready
-      initializedRef.current || // Already initialized
-      (airQualityData && !updateAllowed) // Data received and stored in the store, Auto-refresh interval not reached
-    ) {
-      return;
+    if (!mounted) return;
+
+    // Fetch if no data exists OR if update is allowed
+    if (!airQualityData) {
+      fetchData();
     }
 
-    initializedRef.current = true;
-    fetchData();
-  }, [airQualityData, fetchData, mounted, updateAllowed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mounted, airQualityData]);
 
   // Auto-refresh interval
   useEffect(() => {
@@ -96,12 +91,10 @@ const AirQuality = ({ isMobile }: AirQualityProps) => {
   return (
     <Card
       size="xs"
-      onKeyDown={handleKeyDown}
-      focusByTab
+      onClick={handleUpdate}
       className={cn(
         'flex items-center gustify-between',
-        isAirQualityFetching &&
-          'opacity-40 pointer-events-none cursor-not-allowed'
+        isAirQualityFetching && 'opacity-40 pointer-events-none cursor-progress'
       )}
       aria-label={`Refresh data`}
     >
@@ -118,10 +111,8 @@ const AirQuality = ({ isMobile }: AirQualityProps) => {
               <div
                 onClick={fetchData}
                 className={cn(
-                  'flex-center text-xl font-black tracking-wider cursor-default',
-                  updateAllowed && 'cursor-pointer'
+                  'flex-center text-xl font-black tracking-wider cursor-default'
                 )}
-                title={updateAllowed ? 'Update' : ''}
               >
                 <div
                   className="h-4 w-4 rounded-full"
@@ -143,15 +134,6 @@ const AirQuality = ({ isMobile }: AirQualityProps) => {
               {airQualityData.pm10 ? (
                 <AirQualitySensor {...airQualityData.pm10} particleSize="10" />
               ) : null}
-
-              {/* {airQualityData.overall?.categoryId ? (
-              <div className="mt-1.25 text-[10px] uppercase font-semibold">
-                {
-                  getAirQualityCategoryData(airQualityData.overall.categoryId)
-                    .label
-                }
-              </div>
-            ) : null} */}
             </div>
           </div>
         ) : isAirQualityError ? (

@@ -76,7 +76,7 @@ const Facts = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFactsInitialized, mounted]);
 
-  if (!isFactsInitialized) {
+  if (!fact || isFactsFetching) {
     return (
       <Card size="xs">
         <Loading />
