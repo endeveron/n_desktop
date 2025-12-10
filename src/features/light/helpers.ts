@@ -1,12 +1,14 @@
+import { Page } from 'playwright-core';
+
 import {
   FORM_SELECTOR,
   HOUSE_NUM_AUTOCOMPLETE_ITEM_SELECTOR,
   HOUSE_NUM_AUTOCOMPLETE_LIST_SELECTOR,
   HOUSE_NUM_INPUT_SELECTOR,
+  LIGHT_DATA_UPDATE_INTERVAL,
   STREET_AUTOCOMPLETE_ITEM_SELECTOR,
   STREET_AUTOCOMPLETE_LIST_SELECTOR,
   STREET_INPUT_SELECTOR,
-  LIGHT_DATA_UPDATE_INTERVAL,
 } from '@/features/light/constants';
 import {
   HourStatus,
@@ -15,17 +17,16 @@ import {
   WeekDay,
 } from '@/features/light/types';
 import { logWithTime, MINUTE, withTimeLimit } from '@/utils';
-import { Page } from 'playwright-core';
 
 export function shouldRefetch({
   lightData,
   lightTimestamp,
   now = new Date(),
-  startHour = 21,
+  startHour = 22,
   startMinute = 0,
   endHour = 23,
   endMinute = 30,
-  staleMinutes = 5,
+  staleMinutes = 15,
 }: {
   lightData: unknown | null;
   lightTimestamp: number | null;

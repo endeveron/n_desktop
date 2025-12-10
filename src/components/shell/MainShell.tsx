@@ -7,7 +7,6 @@ import PrimeColumn from '@/components/shell/PrimeColumn';
 import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint';
 import { useStore } from '@/store';
 import MobileContent from '@/components/shell/MobileContent';
-// import MainMenu from '@/components/shared/MainMenu';
 
 const MainShell = ({ children }: { children: ReactNode }) => {
   const { isXs, isSm, isLg } = useTailwindBreakpoint();
@@ -20,7 +19,7 @@ const MainShell = ({ children }: { children: ReactNode }) => {
         {/* Mobile only */}
         {isXs && <MobileContent />}
 
-        {/* Tablet | Desktop: Full layout  */}
+        {/* Full layout  */}
         {isSm && (
           <>
             <PrimeColumn showExtraColumnToggle={showExtraColumnToggle} />
@@ -35,17 +34,6 @@ const MainShell = ({ children }: { children: ReactNode }) => {
       </div>
     </div>
   );
-
-  // return (
-  //   <div className="relative anim-fade h-dvh flex max-sm:items-center flex-col p-2">
-  //     <div className="fixed top-4 left-4">
-  //       <MainMenu />
-  //     </div>
-  //     <div className="flex flex-1 min-h-0 gap-2">
-  //       <ExtraColumn isVisible={true} />
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default MainShell;
